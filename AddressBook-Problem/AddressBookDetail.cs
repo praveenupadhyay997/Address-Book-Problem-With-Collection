@@ -1,28 +1,41 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="AddressBookDetail.cs" company="Bridgelabz">
+//   Copyright © 2018 Company
+// </copyright>
+// <creator Name="Praveen Kumar Upadhyay"/>
+// --------------------------------------------------------------------------------------------------------------------
 namespace AddressBookProblem
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Text;
     /// <summary>
     /// This is the higher order directory class containing value like dictionary and key input like address book
     /// </summary>
     /// <seealso cref="AddressBookProblem.IAddressBook" />
-    class AddressBookDetail : IAddressBook
+    public class AddressBookDetail : IAddressBook
     {
         string addressBookName;
         const int ADD_CONTACT = 1;
         const int EDIT_CONTACT = 2;
         const int DELETE_CONTACT = 3;
         const int GET_ALL_CONTACTS =4;
-        public Dictionary<string, AddressBook> addressBookList = new Dictionary<string, AddressBook>();
 
+        /// <summary>
+        /// Dictionary to store key as the address book name and the value as instance of the address book class
+        /// </summary>
+        public static Dictionary<string, AddressBook> addressBookList = new Dictionary<string, AddressBook>();
+
+        /// <summary>
+        /// Return the instance of address book class when we are done with accessing the details of the address book
+        /// </summary>
+        /// <returns></returns>
         public AddressBook GetAddressBook()
         {
             Console.WriteLine("\nEnter name of Address Book to be accessed or to be added");
             addressBookName = Console.ReadLine().ToLower();
 
-            //search for address book in dictionary
+            //Searcing for address book in dictionary
             if (addressBookList.ContainsKey(addressBookName))
             {
                 Console.WriteLine("\nAddressBook Identified");
@@ -45,11 +58,8 @@ namespace AddressBookProblem
                     Console.WriteLine("\nAction Aborted");
                     return null;
                 }
-
-
             }
         }
-
 
         /// <summary>
         /// Adds the or access address book.
@@ -57,7 +67,7 @@ namespace AddressBookProblem
         public void AddOrAccessAddressBook()
         {
             AddressBook addressBook = GetAddressBook();
-
+            // Condition to check whether the address book returned by the Get address book function returns a null
             if (addressBook == null)
             {
                 Console.WriteLine("Action aborted");
@@ -77,27 +87,23 @@ namespace AddressBookProblem
             switch (Convert.ToInt32(Console.ReadLine().ToLower()))
             {
                 case ADD_CONTACT:
-
                     addressBook.AddContact();
                     break;
 
                 case EDIT_CONTACT:
-
-                    addressBook.editContactDetails();
+                    addressBook.EditContactDetails();
                     break;
 
                 case GET_ALL_CONTACTS:
-
-                    addressBook.displayDetails();
+                    addressBook.DisplayDetails();
                     break;
 
                 case DELETE_CONTACT:
-
-                    addressBook.deleteDetails();
+                    addressBook.DeleteDetails();
                     break;
 
                 default:
-                    Console.WriteLine("\nInvalid option. Exiting address book");
+                    Console.WriteLine("\nInvalid option. Exiting from the address book");
                     return;
             }
 
@@ -130,13 +136,14 @@ namespace AddressBookProblem
         /// </summary>
         public void DeleteAddressBook()
         {
+            // Counting the number of records present in the address book list to initiate the process of record deletion
             if (addressBookList.Count == 0)
-                Console.WriteLine("No record in the Address Book. Enter some record when directed.");
+                Console.WriteLine("No record in the Address Book. Enter some record via the main menu.");
             else
             {
                 Console.WriteLine("\nEnter the name of address book to be deleted ==>>");
                 addressBookName = Console.ReadLine();
-                //search for address book with given name
+                //Searching for address book with given name using exception handling as this process is prone to no count error
                 try
                 {
                     addressBookList.Remove(addressBookName);
@@ -147,6 +154,20 @@ namespace AddressBookProblem
                     Console.WriteLine("Address book not found");
                 }
             }
+        }
+        /// <summary>
+        /// Check for the existence of the duplicate of the address book in the directory
+        /// </summary>
+        /// <param name="addressBookName"></param>
+        public void DuplicateCheck(string addressBookName)
+        {
+            if (addressBookList.ContainsKey(addressBookName))
+            {
+                Console.WriteLine("\nAddressBook Identified");
+                Console.WriteLine("\n Duplicate exists");
+            }
+            else
+                Console.WriteLine("Address Book does not exist");
         }
     }
 }

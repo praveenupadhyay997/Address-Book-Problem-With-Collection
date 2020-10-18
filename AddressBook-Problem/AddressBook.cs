@@ -1,28 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="AddressBook.cs" company="Bridgelabz">
+//   Copyright © 2018 Company
+// </copyright>
+// <creator Name="Praveen Kumar Upadhyay"/>
+// --------------------------------------------------------------------------------------------------------------------
 namespace AddressBookProblem
 {
-    class AddressBook
+    using System;
+    using System.Collections.Generic;
+    using System.Text;
+    public class AddressBook
     {
+        /// List Collection used to cover the domain of contact addition inside an address book
         public List<ContactDetails> contactList = new List<ContactDetails>();
+        /// Field storing the name of the address book
+        public string nameOfAddressBook = "";
+        //Delegate declared to define a lambda function for cehcking duplicacy
+        public delegate bool CheckForDuplicate(string firstName, string lastName);
 
         /// <summary>
-        /// Constants to be used when specific update is required
+        /// Contact detail variables
         /// </summary>
-        const int EDIT_FIRST_NAME = 1;
-        const int EDIT_LAST_NAME = 2;
-        const int EDIT_ADDRESS = 3;
-        const int EDIT_CITY = 4;
-        const int EDIT_STATE = 5;
-        const int EDIT_ZIP = 6;
-        const int EDIT_PHONE_NUMBER = 7;
-        const int EDIT_EMAIL = 8;
-
-
-        public string nameOfAddressBook = " ";
-
         public string firstName;
         public string lastName;
         public string address;
@@ -43,6 +41,7 @@ namespace AddressBookProblem
 
         public void AddContact()
         {
+            // Flag to check the willingness to enter more contact details
             char ch = 'y';
             while (ch == 'y' || ch == 'Y')
             {
@@ -52,29 +51,50 @@ namespace AddressBookProblem
                 Console.WriteLine("\nEnter The Last Name =");
                 lastName = Console.ReadLine();
 
-                Console.WriteLine("\nEnter The Address =");
-                address = Console.ReadLine();
+                CheckForDuplicate duplicate = (firstName, lastName) =>
+                {
+                    foreach (var contactObj in this.contactList)
+                    {
+                        if ((firstName == contactObj.firstName) && (lastName == contactObj.secondName))
+                        {
+                            Console.WriteLine("Same Entry is present in the contact list");
+                            return true;
+                        }
+                    }
+                    return false;
+                };
+                bool prescenceDuplicate = duplicate.Invoke(firstName, lastName);
+                Console.WriteLine(prescenceDuplicate ? "Already Present" : "Absent");
+                // UC-7 Checking for duplicate of the contacts inside the address book on basis of the name
+                if (CheckForDuplicates(firstName, lastName))
+                {
+                    Console.WriteLine("No duplicate entry allowed");
+                }
+                else
+                {
+                    Console.WriteLine("\nEnter The Address =");
+                    address = Console.ReadLine();
 
-                Console.WriteLine("\nEnter The City =");
-                city = Console.ReadLine();
+                    Console.WriteLine("\nEnter The City =");
+                    city = Console.ReadLine();
 
-                Console.WriteLine("\nEnter The State =");
-                state = Console.ReadLine();
+                    Console.WriteLine("\nEnter The State =");
+                    state = Console.ReadLine();
 
-                Console.WriteLine("\nEnter the Zip code");
-                zip = Convert.ToInt64(Console.ReadLine());
+                    Console.WriteLine("\nEnter the Zip code");
+                    zip = Convert.ToInt64(Console.ReadLine());
 
-                Console.WriteLine("\nEnter The phone number = ");
-                phoneNumber = Convert.ToInt64(Console.ReadLine());
+                    Console.WriteLine("\nEnter The phone number = ");
+                    phoneNumber = Convert.ToInt64(Console.ReadLine());
 
-                Console.WriteLine("\nEnter The Email of Contact");
-                email = Console.ReadLine();
+                    Console.WriteLine("\nEnter The Email of Contact");
+                    email = Console.ReadLine();
 
-
-                ContactDetails addNewContact = new ContactDetails(firstName, lastName, address, city, state, zip, phoneNumber, email);
-                contactList.Add(addNewContact);
-                
-                Console.WriteLine("\nContact Was added to the contact list");
+                    // Adding the details once validated for not a duplicate entry
+                    ContactDetails addNewContact = new ContactDetails(firstName, lastName, address, city, state, zip, phoneNumber, email);
+                    this.contactList.Add(addNewContact);
+                    Console.WriteLine("\nContact Was added to the contact list");
+                }
                 Console.WriteLine("Press y or Y to enter more Data OR Press any other word key to exit....");
                 ch = Convert.ToChar(Console.ReadLine());
             }
@@ -84,7 +104,7 @@ namespace AddressBookProblem
         /// <summary>
         /// Edits the contact details.
         /// </summary>
-        public void editContactDetails()
+        public void EditContactDetails()
         {
             int index = 0;
 
@@ -133,7 +153,7 @@ namespace AddressBookProblem
             contactList[index].emailId = email;
         }
 
-        public void deleteDetails()
+        public void DeleteDetails()
         {
             Console.WriteLine("Enter the first name of person whose data to be modified=");
             firstName = Console.ReadLine();
@@ -141,7 +161,7 @@ namespace AddressBookProblem
             lastName = Console.ReadLine();
 
             int index = 0;
-            foreach (var contactObj in this.contactList)
+            foreach (var contactObj in contactList)
             {
 
                 if ((firstName == contactObj.firstName) && (lastName == contactObj.secondName))
@@ -150,13 +170,13 @@ namespace AddressBookProblem
                 }
                 index++;
             }
-            this.contactList.RemoveAt(index);
+            contactList.RemoveAt(index);
         }
 
         /// <summary>
         /// Displays the details.
         /// </summary>
-        public void displayDetails()
+        public void DisplayDetails()
         {
             Console.WriteLine("First Name  ----- Second Name ----- Addres ----- City ----- State ----- Zip ----- Phone Number ----- Email Id");
             foreach (var contactObj in this.contactList)
@@ -165,6 +185,19 @@ namespace AddressBookProblem
             }
         }
         
+        public bool CheckForDuplicates(string firstName, string lastName)
+        {
+            foreach (var contactObj in this.contactList)
+            {
+
+                if ((firstName == contactObj.firstName) && (lastName == contactObj.secondName))
+                {
+                    Console.WriteLine("Same Entry is present in the contact list");
+                    return true;
+                }
+            }           
+            return false;
+        }
             
     }
 }

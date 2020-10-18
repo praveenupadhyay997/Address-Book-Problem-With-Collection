@@ -20,12 +20,14 @@ namespace AddressBookProblem
         const int EDIT_CONTACT = 2;
         const int DELETE_CONTACT = 3;
         const int GET_ALL_CONTACTS =4;
+        const int GET_ALL_CONTACTS_BY_STATE = 5;
+        const int GET_ALL_CONTACTS_BY_CITY = 6;
 
         /// <summary>
         /// Dictionary to store key as the address book name and the value as instance of the address book class
         /// </summary>
         public static Dictionary<string, AddressBook> addressBookList = new Dictionary<string, AddressBook>();
-
+       
         /// <summary>
         /// Return the instance of address book class when we are done with accessing the details of the address book
         /// </summary>
@@ -82,6 +84,8 @@ namespace AddressBookProblem
             Console.WriteLine("2. Edit a contact");
             Console.WriteLine("3. Delete a contact");
             Console.WriteLine("4. Display Stored Contact");
+            Console.WriteLine("5. Display Contact Name as per State");
+            Console.WriteLine("6. Display Contact Name as per City");
             Console.WriteLine("Press any Key to Exit!!!!!!!");
 
             switch (Convert.ToInt32(Console.ReadLine().ToLower()))
@@ -100,6 +104,14 @@ namespace AddressBookProblem
 
                 case DELETE_CONTACT:
                     addressBook.DeleteDetails();
+                    break;
+
+                case GET_ALL_CONTACTS_BY_STATE:
+                    addressBook.DisplayByState();
+                    break;
+
+                case GET_ALL_CONTACTS_BY_CITY:
+                    addressBook.DisplayByCity();
                     break;
 
                 default:
@@ -168,6 +180,6 @@ namespace AddressBookProblem
             }
             else
                 Console.WriteLine("Address Book does not exist");
-        }
+        }  
     }
 }

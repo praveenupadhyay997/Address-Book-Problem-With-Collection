@@ -15,8 +15,12 @@ namespace AddressBookProblem
         public List<ContactDetails> contactList = new List<ContactDetails>();
         /// Field storing the name of the address book
         public string nameOfAddressBook = "";
-        //Delegate declared to define a lambda function for cehcking duplicacy
+        // Delegate declared to define a lambda function for checking duplicacy
         public delegate bool CheckForDuplicate(string firstName, string lastName);
+        // Delegate declared to define a lambda function for ordering by the state name and storing in a dictionary
+        public delegate void ListByState(string state);
+        // Delegate declared to define a lambda function for ordering by the city name and storing in a dictionary
+        public delegate void ListByCity(string city);
 
         /// <summary>
         /// Contact detail variables
@@ -31,6 +35,14 @@ namespace AddressBookProblem
         public string email;
 
         /// <summary>
+        /// Dictionary to add the list of person with the as the state name
+        /// </summary>
+        public static Dictionary<string, List<string>> nameByState = new Dictionary<string, List<string>>();
+        /// <summary>
+        /// Dictionary to add the list of person with the as the city name
+        /// </summary>
+        public static Dictionary<string, List<string>> nameByCity = new Dictionary<string, List<string>>();
+        /// <summary>
         /// Initializes a new instance of the <see cref="AddressBook"/> class.
         /// </summary>
         /// <param name="name">The name.</param>
@@ -39,6 +51,9 @@ namespace AddressBookProblem
             this.nameOfAddressBook = nameOfAddressBook;
         }
 
+        /// <summary>
+        /// Add a contact detail inside the address book
+        /// </summary>
         public void AddContact()
         {
             // Flag to check the willingness to enter more contact details
@@ -115,9 +130,7 @@ namespace AddressBookProblem
             firstName = Console.ReadLine();
             Console.WriteLine("Enter the second name of person whose data to be modified=");
             lastName = Console.ReadLine();
-
-            
-
+            //Checking the index at which the designated data is present
             foreach (var contactObj in this.contactList)
             {
 
@@ -156,6 +169,9 @@ namespace AddressBookProblem
             contactList[index].emailId = email;
         }
 
+        /// <summary>
+        /// Delete the records inside an address book
+        /// </summary>
         public void DeleteDetails()
         {
             Console.WriteLine("Enter the first name of person whose data to be modified=");
@@ -186,7 +202,103 @@ namespace AddressBookProblem
             {
                 Console.WriteLine(contactObj.firstName + "            " + contactObj.secondName + "            " + contactObj.address + "       " + contactObj.city + "      " + contactObj.state + "       " + contactObj.zip + "       " + contactObj.phoneNumber + "        " + contactObj.emailId);
             }
-        }      
+        }
+
+        /// <summary>
+        /// Function to sort the contact details stored inside a address book on basis of distinct state name
+        /// </summary>
+        /// <returns></returns>
+        public Dictionary<string, List<string>> GetContactNameByState()
+        {
+            List<string> stateDistinct = new List<string>();
+            ListByState listByState = (state) =>
+            {
+                List<string> contactName = new List<string>();
+                foreach (var contactObject in contactList)
+                {
+                    if (contactObject.state == state)
+                        contactName.Add(contactObject.firstName + "\t" + contactObject.secondName);
+                }
+                nameByState.Add(state, contactName);
+            };
+            foreach (var contactObj in contactList)
+            {
+                if ((stateDistinct.Contains(contactObj.state)))
+                {
+                    continue;
+                }
+                else
+                    stateDistinct.Add(contactObj.state);
+            }
+            foreach (var stateName in stateDistinct)
+            {
+                listByState.Invoke(stateName);               
+            }
+            return nameByState;
+        }
+
+        /// <summary>
+        /// Function to sort the contact details stored inside a address book on basis of distinct city name
+        /// </summary>
+        /// <returns></returns>
+        public Dictionary<string, List<string>> GetContactNameByCity()
+        {
+            List<string> cityDistinct = new List<string>();
+            ListByCity listByCity = (city) =>
+            {
+                List<string> contactName = new List<string>();
+                foreach (var contactObject in contactList)
+                {
+                    if (contactObject.city == city)
+                        contactName.Add(contactObject.firstName + "\t" + contactObject.secondName);
+                }
+                nameByCity.Add(city, contactName);
+            };
+            foreach (var contactObj in contactList)
+            {
+                if ((cityDistinct.Contains(contactObj.city)))
+                {
+                    continue;
+                }
+                else
+                    cityDistinct.Add(contactObj.city);
+            }
+            foreach (var cityName in cityDistinct)
+            {
+                listByCity.Invoke(cityName);
+            }
+            return nameByCity;
+        }
+
+        /// <summary>
+        /// Display the name of the person order by the state name
+        /// </summary>
+        public void DisplayByState()
+        {
+            Dictionary<string, List<string>> nameByState = GetContactNameByState();
+            foreach (var dictionaryElement in nameByState)
+            {
+                Console.WriteLine("================" + dictionaryElement.Key + "================");
+                List<string> name = dictionaryElement.Value;
+                foreach (string contactName in name)
+                    Console.WriteLine(contactName + "\n");
+            }
+        }
+
+        /// <summary>
+        /// Display the name of the person order by the city name
+        /// </summary>
+        public void DisplayByCity()
+        {
+            Dictionary<string, List<string>> nameByCity = GetContactNameByCity();
+            foreach (var dictionaryElement in nameByCity)
+            {
+                Console.WriteLine("================" + dictionaryElement.Key + "================");
+                List<string> name = dictionaryElement.Value;
+                foreach(string contactName in name)
+                    Console.WriteLine(contactName +"\n");
+            }
+        }
     }
 }
 

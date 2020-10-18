@@ -299,6 +299,48 @@ namespace AddressBookProblem
                     Console.WriteLine(contactName +"\n");
             }
         }
+
+        /// <summary>
+        /// Display the count of the person order by the state name
+        /// </summary>
+        public void DisplayCountByState()
+        {
+            Dictionary<string, List<string>> nameByState = GetContactNameByState();
+            foreach (var dictionaryElement in nameByState)
+            {
+                Console.WriteLine(dictionaryElement.Key + "=" + dictionaryElement.Value.Count);
+            }
+
+            Console.WriteLine("Display by name");
+            Console.WriteLine("Enter the name of the state=");
+            string state = Console.ReadLine();
+            foreach (var dictionaryElement in nameByState)
+            {
+                if(dictionaryElement.Key==state)
+                Console.WriteLine(dictionaryElement.Key + "=" + dictionaryElement.Value.Count);
+            }
+        }
+
+        /// <summary>
+        /// Display the count of the person order by the state name
+        /// </summary>
+        public void DisplayCountByCity()
+        {
+            Dictionary<string, List<string>> nameByCity = GetContactNameByCity();
+            foreach (var dictionaryElement in nameByCity)
+            {
+                Console.WriteLine(dictionaryElement.Key + "=" + dictionaryElement.Value.Count);
+            }
+
+            Console.WriteLine("Display by name");
+            Console.WriteLine("Enter the name of the city=");
+            string city = Console.ReadLine();
+            foreach (var dictionaryElement in nameByCity)
+            {
+                if (dictionaryElement.Key == city)
+                    Console.WriteLine(dictionaryElement.Key + "=" + dictionaryElement.Value.Count);
+            }
+        }
     }
 }
 

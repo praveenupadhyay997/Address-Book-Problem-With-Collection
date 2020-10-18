@@ -1,8 +1,14 @@
-﻿using System;
-using System.Xml.Serialization;
-
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="Program.cs" company="Bridgelabz">
+//   Copyright © 2018 Company
+// </copyright>
+// <creator Name="Praveen Kumar Upadhyay"/>
+// --------------------------------------------------------------------------------------------------------------------
 namespace AddressBookProblem
 {
+    using System;
+    using System.Xml.Serialization;
+
     /// <summary>
     /// Interface for The Entire address book
     /// </summary>
@@ -12,20 +18,20 @@ namespace AddressBookProblem
         void ViewAllAddressBooks();
         void DeleteAddressBook();
     }
-    class Program
+    
+    public class Program
     {
-        static void Main(string[] args)
+        public static void GuidanceMenu()
         {
-
             AddressBookDetail addressBookDetail = new AddressBookDetail();
             // Driving the Execution through menu guidation
-            Outer:
             Console.WriteLine("***************************");
             Console.WriteLine("Welcome to the Address Book");
             Console.WriteLine("****************************");
             Console.WriteLine("1. Add or Access the Address Book");
             Console.WriteLine("2. Display the present address Books");
             Console.WriteLine("3. Delete the address book");
+            Console.WriteLine("4. Check if duplicate exist of the address book");
             Console.WriteLine("Press any other Key to Exit!!!!!!!");
 
             int choice = Convert.ToInt32(Console.ReadLine());
@@ -47,13 +53,21 @@ namespace AddressBookProblem
                     Console.Clear();
                     break;
 
-                default:
-                    Console.WriteLine("Enter the correct choice Please!!!!!!");
+                case 4:
+                    Console.WriteLine("\n Enter the name of the address book whose duplicate you have to search");
+                    string addressBookName = Console.ReadLine().ToLower();
+                    addressBookDetail.DuplicateCheck(addressBookName);
                     break;
 
+                default:
+                    Console.WriteLine("Enter the correct choice Please!!!!!!");
+                    break;               
             }
-            goto Outer;
-
+            GuidanceMenu();
+        }
+        static void Main(string[] args)
+        {
+            GuidanceMenu();         
         }
     }
 }

@@ -1,11 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="ContactDetails.cs" company="Bridgelabz">
+//   Copyright © 2018 Company
+// </copyright>
+// <creator Name="Praveen Kumar Upadhyay"/>
+// --------------------------------------------------------------------------------------------------------------------
 namespace AddressBookProblem
 {
-   
-    class ContactDetails
+    using System;
+    using System.Collections.Generic;
+    using System.Text;
+    public class ContactDetails
     {
         /// <summary>
         /// contact PRoperties mentioned in the Use-Case

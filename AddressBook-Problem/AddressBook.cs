@@ -51,6 +51,7 @@ namespace AddressBookProblem
                 Console.WriteLine("\nEnter The Last Name =");
                 lastName = Console.ReadLine();
 
+                //Lambda Function defined to check duplicacy of the contact
                 CheckForDuplicate duplicate = (firstName, lastName) =>
                 {
                     foreach (var contactObj in this.contactList)
@@ -63,10 +64,12 @@ namespace AddressBookProblem
                     }
                     return false;
                 };
+                //Invoking the lambda function for checking duplicacy
                 bool prescenceDuplicate = duplicate.Invoke(firstName, lastName);
+                //Ternary statement for indicating the prescence
                 Console.WriteLine(prescenceDuplicate ? "Already Present" : "Absent");
                 // UC-7 Checking for duplicate of the contacts inside the address book on basis of the name
-                if (CheckForDuplicates(firstName, lastName))
+                if (prescenceDuplicate)
                 {
                     Console.WriteLine("No duplicate entry allowed");
                 }
@@ -183,22 +186,7 @@ namespace AddressBookProblem
             {
                 Console.WriteLine(contactObj.firstName + "            " + contactObj.secondName + "            " + contactObj.address + "       " + contactObj.city + "      " + contactObj.state + "       " + contactObj.zip + "       " + contactObj.phoneNumber + "        " + contactObj.emailId);
             }
-        }
-        
-        public bool CheckForDuplicates(string firstName, string lastName)
-        {
-            foreach (var contactObj in this.contactList)
-            {
-
-                if ((firstName == contactObj.firstName) && (lastName == contactObj.secondName))
-                {
-                    Console.WriteLine("Same Entry is present in the contact list");
-                    return true;
-                }
-            }           
-            return false;
-        }
-            
+        }      
     }
 }
 

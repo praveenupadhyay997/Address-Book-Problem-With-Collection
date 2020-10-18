@@ -22,6 +22,8 @@ namespace AddressBookProblem
         const int GET_ALL_CONTACTS =4;
         const int GET_ALL_CONTACTS_BY_STATE = 5;
         const int GET_ALL_CONTACTS_BY_CITY = 6;
+        const int GET_COUNT_BY_STATE = 7;
+        const int GET_COUNT_BY_CITY = 8;
 
         /// <summary>
         /// Dictionary to store key as the address book name and the value as instance of the address book class
@@ -86,6 +88,8 @@ namespace AddressBookProblem
             Console.WriteLine("4. Display Stored Contact");
             Console.WriteLine("5. Display Contact Name as per State");
             Console.WriteLine("6. Display Contact Name as per City");
+            Console.WriteLine("7. Display Count of contact as per State");
+            Console.WriteLine("8. Display Count of contact as per City");
             Console.WriteLine("Press any Key to Exit!!!!!!!");
 
             switch (Convert.ToInt32(Console.ReadLine().ToLower()))
@@ -112,6 +116,14 @@ namespace AddressBookProblem
 
                 case GET_ALL_CONTACTS_BY_CITY:
                     addressBook.DisplayByCity();
+                    break;
+
+                case GET_COUNT_BY_STATE:
+                    addressBook.DisplayCountByState();
+                    break;
+
+                case GET_COUNT_BY_CITY:
+                    addressBook.DisplayCountByCity();
                     break;
 
                 default:

@@ -32,6 +32,8 @@ namespace AddressBookProblem
             Console.WriteLine("2. Display the present address Books");
             Console.WriteLine("3. Delete the address book");
             Console.WriteLine("4. Check if duplicate exist of the address book");
+            Console.WriteLine("5. List Contacts in the address book by State");
+            Console.WriteLine("5. List Contacts in the address book by City");
             Console.WriteLine("Press any other Key to Exit!!!!!!!");
 
             int choice = Convert.ToInt32(Console.ReadLine());
@@ -57,6 +59,14 @@ namespace AddressBookProblem
                     Console.WriteLine("\n Enter the name of the address book whose duplicate you have to search");
                     string addressBookName = Console.ReadLine().ToLower();
                     addressBookDetail.DuplicateCheck(addressBookName);
+                    break;
+
+                case 5:
+                    addressBookDetail.TraverseAllAddressBooksToOrderByState();
+                    break;
+
+                case 6:
+                    addressBookDetail.TraverseAllAddressBooksToOrderByCity();
                     break;
 
                 default:

@@ -8,6 +8,7 @@ namespace AddressBookProblem
 {
     using System;
     using System.Collections.Generic;
+    using System.Data;
     using System.Text;
     /// <summary>
     /// This is the higher order directory class containing value like dictionary and key input like address book
@@ -192,6 +193,117 @@ namespace AddressBookProblem
             }
             else
                 Console.WriteLine("Address Book does not exist");
-        }  
+        }
+
+        /// <summary>
+        /// Traverse all address books to get the contact details as per state or city
+        /// </summary>
+        public void TraverseAllAddressBooksToOrderByState()
+        {
+            //Dictionary to store list of contacts by the name of state
+            Dictionary<string, List<string>> nameByState = new Dictionary<string, List<string>>();
+            List<string> distinctState = new List<string>();
+            //Check the count exception case in begining only
+            if (addressBookList.Count == 0)
+                Console.WriteLine("No record found");
+            else
+            {
+                foreach (KeyValuePair<string, AddressBook> keyValuePair in addressBookList)
+                {
+                    //Creating an instance of the address book to store the key
+                    AddressBook addressBook = new AddressBook(keyValuePair.Key);
+                    List<ContactDetails> contacts = keyValuePair.Value.contactList;
+                    foreach (ContactDetails details in contacts)
+                    {
+                        //Adding only the distinct state
+                        if (distinctState.Contains(details.state))
+                            continue;
+                        else
+                            distinctState.Add(details.state);
+                    }                                                        
+                }
+                //Reiterating the distinct state for adding the contacts
+                foreach(var stateName in distinctState)
+                {
+                    // String list aimed to add the contact values as per distinct state name
+                    List<string> contactValues = new List<string>();
+                    foreach (KeyValuePair<string, AddressBook> keyValuePair in addressBookList)
+                    {
+                        AddressBook addressBook = new AddressBook(keyValuePair.Key);
+                        List<ContactDetails> contacts = keyValuePair.Value.contactList;
+                        foreach (var contactInAddressBook in contacts)
+                        {
+                            //Adding the contacts in case the state name matches the distinct state list element
+                            if (contactInAddressBook.state == stateName)
+                                contactValues.Add(contactInAddressBook.firstName + " \t" + contactInAddressBook.secondName);
+                        }
+                    }
+                    nameByState.Add(stateName, contactValues);
+                }
+                //Displaying the name of the contact stored in the dictionary
+                foreach (var dictionaryElement in nameByState)
+                {
+                    Console.WriteLine("================" + dictionaryElement.Key + "================");
+                    List<string> name = dictionaryElement.Value;
+                    foreach (string contactName in name)
+                        Console.WriteLine(contactName + "\n");
+                }
+            }
+        }
+
+        /// <summary>
+        /// Traverse all address books to get the contact details as per state or city
+        /// </summary>
+        public void TraverseAllAddressBooksToOrderByCity()
+        {
+            //Dictionary to store the list of contacts as per city name
+            Dictionary<string, List<string>> nameByCity = new Dictionary<string, List<string>>();
+            List<string> distinctCity = new List<string>();
+            if (addressBookList.Count == 0)
+                Console.WriteLine("No record found");
+            else
+            {
+                //Address Book traversing to get distinct name
+                foreach (KeyValuePair<string, AddressBook> keyValuePair in addressBookList)
+                {
+                    //Creating instance of the address book usingthe key value of the address book
+                    AddressBook addressBook = new AddressBook(keyValuePair.Key);
+                    List<ContactDetails> contacts = keyValuePair.Value.contactList;
+                    foreach (ContactDetails details in contacts)
+                    {
+                        //Adding only the distinct city
+                        //In if using the distinct case element
+                        //Else add to the city
+                        if (distinctCity.Contains(details.city))
+                            continue;
+                        else
+                            distinctCity.Add(details.city);
+                    }
+                }
+                //Iterating the city name  in distinct city list and then iterating the entire address book to add list of contacts
+                foreach (var cityName in distinctCity)
+                {
+                    List<string> contactValues = new List<string>();
+                    foreach (KeyValuePair<string, AddressBook> keyValuePair in addressBookList)
+                    {
+                        AddressBook addressBook = new AddressBook(keyValuePair.Key);
+                        List<ContactDetails> contacts = keyValuePair.Value.contactList;
+                        //Adding the contact list in the dictionary
+                        foreach (var contactInAddressBook in contacts)
+                            if (contactInAddressBook.city == cityName)
+                                contactValues.Add(contactInAddressBook.firstName + " \t" + contactInAddressBook.secondName);
+                    }
+                    nameByCity.Add(cityName, contactValues);
+                }
+                //Traversing the dictionary to display the entire mapped set of city and contact name
+                foreach (var dictionaryElement in nameByCity)
+                {
+                    Console.WriteLine("================" + dictionaryElement.Key + "================");
+                    List<string> name = dictionaryElement.Value;
+                    foreach (string contactName in name)
+                        Console.WriteLine(contactName + "\n");
+                }
+            }
+        }
     }
 }

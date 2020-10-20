@@ -210,17 +210,24 @@ namespace AddressBookProblem
         /// <returns></returns>
         public Dictionary<string, List<string>> GetContactNameByState()
         {
+            //A List to store the state name distinctly
             List<string> stateDistinct = new List<string>();
+            //Lambda expression aimed to make a route of entire address book for getting the contacts of same state
             ListByState listByState = (state) =>
             {
+                //List to store the found contact names
                 List<string> contactName = new List<string>();
+                //Loop iterating over the contact List of an contact list to store the matching contacts name
                 foreach (var contactObject in contactList)
                 {
+                    //Matching condition of state with the lambda parameter
                     if (contactObject.state == state)
                         contactName.Add(contactObject.firstName + "\t" + contactObject.secondName);
                 }
+                //Adding a mapped value of state to contact name
                 nameByState.Add(state, contactName);
             };
+            //Loop iterating over the contact list to get distinct state
             foreach (var contactObj in contactList)
             {
                 if ((stateDistinct.Contains(contactObj.state)))
@@ -232,6 +239,7 @@ namespace AddressBookProblem
             }
             foreach (var stateName in stateDistinct)
             {
+                //Invoking the lambda function by passing the state name as the parameter and then evaluating contact details
                 listByState.Invoke(stateName);               
             }
             return nameByState;
@@ -243,17 +251,22 @@ namespace AddressBookProblem
         /// <returns></returns>
         public Dictionary<string, List<string>> GetContactNameByCity()
         {
+            //A List to store the city name distinctly
             List<string> cityDistinct = new List<string>();
+            //Lambda expression aimed to make a route of entire contact detail for getting the contacts of same city
             ListByCity listByCity = (city) =>
             {
                 List<string> contactName = new List<string>();
                 foreach (var contactObject in contactList)
                 {
+                    //Matching condition of city with the lambda parameter
                     if (contactObject.city == city)
                         contactName.Add(contactObject.firstName + "\t" + contactObject.secondName);
                 }
+                //Adding a mapped value of state to contact name
                 nameByCity.Add(city, contactName);
             };
+            //Loop iterating over the contact list to get distinct city
             foreach (var contactObj in contactList)
             {
                 if ((cityDistinct.Contains(contactObj.city)))
@@ -265,6 +278,7 @@ namespace AddressBookProblem
             }
             foreach (var cityName in cityDistinct)
             {
+                //Invoking the lambda function by passing the city name as the parameter and then evaluating contact details
                 listByCity.Invoke(cityName);
             }
             return nameByCity;
@@ -291,6 +305,7 @@ namespace AddressBookProblem
         public void DisplayByCity()
         {
             Dictionary<string, List<string>> nameByCity = GetContactNameByCity();
+            //Iterating over the dictionary to print the details we mapped
             foreach (var dictionaryElement in nameByCity)
             {
                 Console.WriteLine("================" + dictionaryElement.Key + "================");
@@ -301,11 +316,12 @@ namespace AddressBookProblem
         }
 
         /// <summary>
-        /// Display the count of the person order by the state name
+        /// UC-10 Display the count of the person order by the state name
         /// </summary>
         public void DisplayCountByState()
         {
             Dictionary<string, List<string>> nameByState = GetContactNameByState();
+            //Displaying count of  all the contacts recieved
             foreach (var dictionaryElement in nameByState)
             {
                 Console.WriteLine(dictionaryElement.Key + "=" + dictionaryElement.Value.Count);
@@ -314,6 +330,7 @@ namespace AddressBookProblem
             Console.WriteLine("Display by name");
             Console.WriteLine("Enter the name of the state=");
             string state = Console.ReadLine();
+            //Displaying the count of the contact list as per the state matched when entered by the user
             foreach (var dictionaryElement in nameByState)
             {
                 if(dictionaryElement.Key==state)
@@ -322,10 +339,11 @@ namespace AddressBookProblem
         }
 
         /// <summary>
-        /// Display the count of the person order by the state name
+        /// UC10 Display the count of the person order by the state name
         /// </summary>
         public void DisplayCountByCity()
         {
+            //Calling the getting contact name by city inside a dictionary
             Dictionary<string, List<string>> nameByCity = GetContactNameByCity();
             foreach (var dictionaryElement in nameByCity)
             {
